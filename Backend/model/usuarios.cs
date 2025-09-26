@@ -15,8 +15,6 @@ public class Users
 
     public string? curp { get; set; } // CHAR(18)
 
-    public DateTime? fecha_nacimiento { get; set; } // DATE
-
     public string? direccion { get; set; } // VARCHAR(255)
 
     public string tipo_usuario { get; set; } = "JOVEN"; // VARCHAR(20) - valores posibles: "JOVEN", "NEGOCIO", "ADMIN"

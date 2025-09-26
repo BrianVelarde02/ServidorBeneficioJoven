@@ -45,7 +45,6 @@ app.MapGet("/usuarios", async (ApiDbContext db) =>
             apellidos = u.apellidos,
             telefono = u.telefono,
             curp = u.curp,
-            fecha_nacimiento = u.fecha_nacimiento,
             direccion = u.direccion,
             tipo_usuario = u.tipo_usuario,
             esta_activo = u.esta_activo,
@@ -70,7 +69,6 @@ app.MapGet("/usuario/{id}", async (ApiDbContext db, int id) =>
             apellidos = u.apellidos,
             telefono = u.telefono,
             curp = u.curp,
-            fecha_nacimiento = u.fecha_nacimiento,
             direccion = u.direccion,
             tipo_usuario = u.tipo_usuario,
             esta_activo = u.esta_activo,
@@ -104,9 +102,6 @@ app.MapPost("/usuario", async (ApiDbContext db, UsersCreateDto dto) =>
     if (string.IsNullOrWhiteSpace(dto.nombre) || string.IsNullOrWhiteSpace(dto.curp))
         return Results.BadRequest(new { mensaje = "Nombre y CURP son obligatorios" });
 
-    if (dto.fecha_nacimiento.HasValue && dto.fecha_nacimiento > DateTime.Today)
-        return Results.BadRequest(new { mensaje = "Fecha de nacimiento inválida" });
-
     if (await db.usuarios.AnyAsync(u => u.correo == dto.correo))
         return Results.BadRequest(new { mensaje = "Email ya registrado" });
 
@@ -124,7 +119,6 @@ app.MapPost("/usuario", async (ApiDbContext db, UsersCreateDto dto) =>
         apellidos = dto.apellidos,
         telefono = dto.telefono,
         curp = dto.curp,
-        fecha_nacimiento = dto.fecha_nacimiento,
         direccion = dto.direccion,
         tipo_usuario = dto.tipo_usuario,
         esta_activo = true
@@ -141,7 +135,6 @@ app.MapPost("/usuario", async (ApiDbContext db, UsersCreateDto dto) =>
         apellidos = user.apellidos,
         telefono = user.telefono,
         curp = user.curp,
-        fecha_nacimiento = user.fecha_nacimiento,
         direccion = user.direccion,
         tipo_usuario = user.tipo_usuario,
         esta_activo = user.esta_activo,
@@ -176,7 +169,6 @@ app.MapPost("/login", async (ApiDbContext db, LoginDto login) =>
         apellidos = user.apellidos,
         telefono = user.telefono,
         curp = user.curp,
-        fecha_nacimiento = user.fecha_nacimiento,
         direccion = user.direccion,
         tipo_usuario = user.tipo_usuario
     };
