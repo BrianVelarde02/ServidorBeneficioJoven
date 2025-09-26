@@ -36,20 +36,20 @@ app.MapGet("/inicio", () => "¡Bienvenido a Inicio!");
 // Obtener todos los usuarios
 app.MapGet("/usuarios", async (ApiDbContext db) =>
 {
-    var usuarios = await db.users
+    var usuarios = await db.usuarios
         .Select(u => new UsersDto
         {
             id = u.id,
-            email = u.email,
-            first_name = u.first_name,
-            last_name = u.last_name,
-            phone = u.phone,
+            correo = u.correo,
+            nombre = u.nombre,
+            apellidos = u.apellidos,
+            telefono = u.telefono,
             curp = u.curp,
-            birth_date = u.birth_date,
-            address = u.address,
-            user_type = u.user_type,
-            is_active = u.is_active,
-            created_at = u.created_at
+            fecha_nacimiento = u.fecha_nacimiento,
+            direccion = u.direccion,
+            tipo_usuario = u.tipo_usuario,
+            esta_activo = u.esta_activo,
+            creado_en = u.creado_en
         })
         .ToListAsync();
 
@@ -60,21 +60,21 @@ app.MapGet("/usuarios", async (ApiDbContext db) =>
 // Obtener usuario por ID
 app.MapGet("/usuario/{id}", async (ApiDbContext db, int id) =>
 {
-    var user = await db.users
+    var user = await db.usuarios
         .Where(u => u.id == id)
         .Select(u => new UsersDto
         {
             id = u.id,
-            email = u.email,
-            first_name = u.first_name,
-            last_name = u.last_name,
-            phone = u.phone,
+            correo = u.correo,
+            nombre = u.nombre,
+            apellidos = u.apellidos,
+            telefono = u.telefono,
             curp = u.curp,
-            birth_date = u.birth_date,
-            address = u.address,
-            user_type = u.user_type,
-            is_active = u.is_active,
-            created_at = u.created_at
+            fecha_nacimiento = u.fecha_nacimiento,
+            direccion = u.direccion,
+            tipo_usuario = u.tipo_usuario,
+            esta_activo = u.esta_activo,
+            creado_en = u.creado_en
         })
         .FirstOrDefaultAsync();
 
@@ -87,13 +87,13 @@ app.MapGet("/usuario/{id}", async (ApiDbContext db, int id) =>
 // Eliminar usuario
 app.MapDelete("/usuario/{id:int}", async (ApiDbContext db, int id) =>
 {
-    var usuario = await db.users.FindAsync(id);
+    var usuario = await db.usuarios.FindAsync(id);
     if (usuario == null)
         return Results.NotFound(new { mensaje = "Usuario no encontrado" });
 
-    db.users.Remove(usuario);
+    db.usuarios.Remove(usuario);
     await db.SaveChangesAsync();
-    return Results.Ok(new { mensaje = $"Usuario {usuario.first_name} {usuario.last_name} eliminado correctamente" });
+    return Results.Ok(new { mensaje = $"Usuario {usuario.nombre} {usuario.apellidos} eliminado correctamente" });
 })
 .WithName("EliminarUsuario");
 
@@ -101,51 +101,51 @@ app.MapDelete("/usuario/{id:int}", async (ApiDbContext db, int id) =>
 app.MapPost("/usuario", async (ApiDbContext db, UsersCreateDto dto) =>
 {
     // Validaciones
-    if (string.IsNullOrWhiteSpace(dto.first_name) || string.IsNullOrWhiteSpace(dto.curp))
+    if (string.IsNullOrWhiteSpace(dto.nombre) || string.IsNullOrWhiteSpace(dto.curp))
         return Results.BadRequest(new { mensaje = "Nombre y CURP son obligatorios" });
 
-    if (dto.birth_date.HasValue && dto.birth_date > DateTime.Today)
+    if (dto.fecha_nacimiento.HasValue && dto.fecha_nacimiento > DateTime.Today)
         return Results.BadRequest(new { mensaje = "Fecha de nacimiento inválida" });
 
-    if (await db.users.AnyAsync(u => u.email == dto.email))
+    if (await db.usuarios.AnyAsync(u => u.correo == dto.correo))
         return Results.BadRequest(new { mensaje = "Email ya registrado" });
 
-    if (!string.IsNullOrWhiteSpace(dto.curp) && await db.users.AnyAsync(u => u.curp == dto.curp))
+    if (!string.IsNullOrWhiteSpace(dto.curp) && await db.usuarios.AnyAsync(u => u.curp == dto.curp))
         return Results.BadRequest(new { mensaje = "CURP ya registrado" });
 
     // Hashear contraseña con Argon2id
-    string passwordHash = Argon2.Hash(dto.password);
+    string passwordHash = Argon2.Hash(dto.contrasena);
 
     var user = new Users
     {
-        email = dto.email,
-        password_hash = passwordHash,
-        first_name = dto.first_name,
-        last_name = dto.last_name,
-        phone = dto.phone,
+        correo = dto.correo,
+        hash_contrasena = passwordHash,
+        nombre = dto.nombre,
+        apellidos = dto.apellidos,
+        telefono = dto.telefono,
         curp = dto.curp,
-        birth_date = dto.birth_date,
-        address = dto.address,
-        user_type = dto.user_type,
-        is_active = true
+        fecha_nacimiento = dto.fecha_nacimiento,
+        direccion = dto.direccion,
+        tipo_usuario = dto.tipo_usuario,
+        esta_activo = true
     };
 
-    db.users.Add(user);
+    db.usuarios.Add(user);
     await db.SaveChangesAsync();
 
     var resultDto = new UsersDto
     {
         id = user.id,
-        email = user.email,
-        first_name = user.first_name,
-        last_name = user.last_name,
-        phone = user.phone,
+        correo = user.correo,
+        nombre = user.nombre,
+        apellidos = user.apellidos,
+        telefono = user.telefono,
         curp = user.curp,
-        birth_date = user.birth_date,
-        address = user.address,
-        user_type = user.user_type,
-        is_active = user.is_active,
-        created_at = user.created_at
+        fecha_nacimiento = user.fecha_nacimiento,
+        direccion = user.direccion,
+        tipo_usuario = user.tipo_usuario,
+        esta_activo = user.esta_activo,
+        creado_en = user.creado_en
     };
 
     return Results.Ok(resultDto);
@@ -154,16 +154,16 @@ app.MapPost("/usuario", async (ApiDbContext db, UsersCreateDto dto) =>
 // --------------------- Login ---------------------
 app.MapPost("/login", async (ApiDbContext db, LoginDto login) =>
 {
-    var user = await db.users.FirstOrDefaultAsync(u => u.email == login.email);
+    var user = await db.usuarios.FirstOrDefaultAsync(u => u.correo == login.correo);
 
     if (user == null)
         return Results.NotFound(new { mensaje = "Usuario no encontrado" });
 
-    if (string.IsNullOrWhiteSpace(user.user_type))
-        user.user_type = "YOUTH";
+    if (string.IsNullOrWhiteSpace(user.tipo_usuario))
+        user.tipo_usuario = "JOVEN";
 
     // Verificar contraseña usando Argon2
-    bool passwordValida = Argon2.Verify(user.password_hash, login.password);
+    bool passwordValida = Argon2.Verify(user.hash_contrasena, login.contrasena);
 
     if (!passwordValida)
         return Results.BadRequest(new { mensaje = "Contraseña incorrecta" });
@@ -171,10 +171,14 @@ app.MapPost("/login", async (ApiDbContext db, LoginDto login) =>
     var result = new
     {
         id = user.id,
-        email = user.email,
-        first_name = user.first_name,
-        last_name = user.last_name,
-        user_type = user.user_type
+        correo = user.correo,
+        nombre = user.nombre,
+        apellidos = user.apellidos,
+        telefono = user.telefono,
+        curp = user.curp,
+        fecha_nacimiento = user.fecha_nacimiento,
+        direccion = user.direccion,
+        tipo_usuario = user.tipo_usuario
     };
 
     return Results.Ok(result);
