@@ -14,7 +14,7 @@ builder.Services.AddDbContext<ApiDbContext>(options =>
         new MySqlServerVersion(new Version(8, 0, 36))
     ));
 
-// Swagger (documentación de la API)
+// Swagger para documentación de API
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

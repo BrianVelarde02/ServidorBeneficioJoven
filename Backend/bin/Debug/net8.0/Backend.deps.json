@@ -63,7 +63,6 @@
       "Microsoft.EntityFrameworkCore/9.0.9": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore.Abstractions": "9.0.9",
-          "Microsoft.EntityFrameworkCore.Analyzers": "9.0.9",
           "Microsoft.Extensions.Caching.Memory": "9.0.9",
           "Microsoft.Extensions.Logging": "9.0.9"
         },
@@ -82,7 +81,6 @@
           }
         }
       },
-      "Microsoft.EntityFrameworkCore.Analyzers/9.0.9": {},
       "Microsoft.EntityFrameworkCore.Relational/9.0.0": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "9.0.9",
@@ -97,7 +95,6 @@
           }
         }
       },
-      "Microsoft.Extensions.ApiDescription.Server/8.0.0": {},
       "Microsoft.Extensions.Caching.Abstractions/9.0.9": {
         "dependencies": {
           "Microsoft.Extensions.Primitives": "9.0.9"
@@ -208,10 +205,6 @@
         }
       },
       "MySqlConnector/2.4.0": {
-        "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.9",
-          "Microsoft.Extensions.Logging.Abstractions": "9.0.9"
-        },
         "runtime": {
           "lib/net8.0/MySqlConnector.dll": {
             "assemblyVersion": "2.0.0.0",
@@ -233,7 +226,6 @@
       },
       "Swashbuckle.AspNetCore/9.0.4": {
         "dependencies": {
-          "Microsoft.Extensions.ApiDescription.Server": "8.0.0",
           "Swashbuckle.AspNetCore.Swagger": "9.0.4",
           "Swashbuckle.AspNetCore.SwaggerGen": "9.0.4",
           "Swashbuckle.AspNetCore.SwaggerUI": "9.0.4"
@@ -327,26 +319,12 @@
       "path": "microsoft.entityframeworkcore.abstractions/9.0.9",
       "hashPath": "microsoft.entityframeworkcore.abstractions.9.0.9.nupkg.sha512"
     },
-    "Microsoft.EntityFrameworkCore.Analyzers/9.0.9": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-uiKeU/qR0YpaDUa4+g0rAjKCuwfq8YWZGcpPptnFWIr1K7dXQTm/15D2HDwwU4ln3Uf66krYybymuY58ua4hhw==",
-      "path": "microsoft.entityframeworkcore.analyzers/9.0.9",
-      "hashPath": "microsoft.entityframeworkcore.analyzers.9.0.9.nupkg.sha512"
-    },
     "Microsoft.EntityFrameworkCore.Relational/9.0.0": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-j+msw6fWgAE9M3Q/5B9Uhv7pdAdAQUvFPJAiBJmoy+OXvehVbfbCE8ftMAa51Uo2ZeiqVnHShhnv4Y4UJJmUzA==",
       "path": "microsoft.entityframeworkcore.relational/9.0.0",
       "hashPath": "microsoft.entityframeworkcore.relational.9.0.0.nupkg.sha512"
-    },
-    "Microsoft.Extensions.ApiDescription.Server/8.0.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-jDM3a95WerM8g6IcMiBXq1qRS9dqmEUpgnCk2DeMWpPkYtp1ia+CkXabOnK93JmhVlUmv8l9WMPsCSUm+WqkIA==",
-      "path": "microsoft.extensions.apidescription.server/8.0.0",
-      "hashPath": "microsoft.extensions.apidescription.server.8.0.0.nupkg.sha512"
     },
     "Microsoft.Extensions.Caching.Abstractions/9.0.9": {
       "type": "package",
